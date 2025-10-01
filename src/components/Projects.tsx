@@ -23,13 +23,13 @@ const Projects: React.FC = () => {
   const filteredProjects = filter === 'all' ? projects : projects.filter((p: any) => p.category === filter);
 
   return (
-    <section id="projects" className="py-20 bg-white">
+    <section id="projects" className="py-20 bg-gray-800">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {content.title || 'Our Projects'}
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
             {content.description || 'Explore our portfolio of successful digital solutions and innovative applications'}
           </p>
           
@@ -41,7 +41,7 @@ const Projects: React.FC = () => {
                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                   filter === category
                     ? 'bg-green-600 text-white shadow-lg shadow-green-500/25'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -54,7 +54,7 @@ const Projects: React.FC = () => {
           {filteredProjects.map((project: any) => (
             <div 
               key={project.id}
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+              className="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-700"
             >
               <div className="relative overflow-hidden">
                 <img 
@@ -79,13 +79,13 @@ const Projects: React.FC = () => {
               </div>
               
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                <p className="text-gray-600 mb-4">{project.description}</p>
+                <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                <p className="text-gray-300 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {(project.technologies || []).map((tech: string, index: number) => (
                     <span 
                       key={index}
-                      className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium"
+                      className="px-3 py-1 bg-green-900 text-green-300 text-sm rounded-full font-medium"
                     >
                       {tech}
                     </span>

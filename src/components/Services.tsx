@@ -21,9 +21,9 @@ const Services: React.FC = () => {
     },
     {
       icon: '☁️',
-      title: 'Cloud Backends',
-      description: 'Scalable serverless solutions and cloud infrastructure using AWS Amplify and modern DevOps.',
-      technologies: ['AWS Amplify', 'Serverless', 'DynamoDB', 'GraphQL']
+      title: 'Cloud Solutions',
+      description: 'Modern backend solutions using Supabase and Firebase for real-time databases and authentication.',
+      technologies: ['Supabase', 'Firebase', 'PostgreSQL', 'Real-time APIs']
     },
     {
       icon: '🎨',
@@ -49,13 +49,13 @@ const Services: React.FC = () => {
   const displayServices = services.length > 0 ? services : defaultServices;
 
   return (
-    <section id="services" className="py-20 bg-gray-50">
+    <section id="services" className="py-20 bg-gray-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {content.title || 'Our Services'}
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             {content.description || 'We provide comprehensive digital solutions to transform your business ideas into reality'}
           </p>
         </div>
@@ -64,16 +64,16 @@ const Services: React.FC = () => {
           {displayServices.map((service: any, index: number) => (
             <div 
               key={index}
-              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+              className="bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-700"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">{service.description}</p>
+              <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
+              <p className="text-gray-300 mb-4 leading-relaxed">{service.description}</p>
               <div className="flex flex-wrap gap-2">
                 {(service.technologies || []).map((tech: string, techIndex: number) => (
                   <span 
                     key={techIndex}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
+                    className="px-3 py-1 bg-green-900 text-green-300 text-sm rounded-full font-medium"
                   >
                     {tech}
                   </span>

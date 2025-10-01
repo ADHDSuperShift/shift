@@ -89,10 +89,10 @@ const Contact: React.FC = () => {
 
   if (loading) {
     return (
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
+          <p className="mt-2 text-gray-300">Loading...</p>
         </div>
       </section>
     );
@@ -100,12 +100,12 @@ const Contact: React.FC = () => {
 
   if (submitted) {
     return (
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="py-20 bg-gray-800">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-12">
+          <div className="bg-green-900 border border-green-700 rounded-2xl p-12">
             <div className="text-6xl mb-4">✅</div>
-            <h3 className="text-3xl font-bold text-green-800 mb-4">Message Sent!</h3>
-            <p className="text-green-700 text-lg">
+            <h3 className="text-3xl font-bold text-green-300 mb-4">Message Sent!</h3>
+            <p className="text-green-400 text-lg">
               Thanks for reaching out! We'll get back to you within 24 hours.
             </p>
           </div>
@@ -115,13 +115,13 @@ const Contact: React.FC = () => {
   }
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-gray-800">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {content.title}
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             {content.description}
           </p>
         </div>
@@ -129,14 +129,14 @@ const Contact: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           <div>
             {error && (
-              <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-700">{error}</p>
+              <div className="mb-6 bg-red-900 border border-red-700 rounded-lg p-4">
+                <p className="text-red-300">{error}</p>
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Name *
                   </label>
                   <input
@@ -145,12 +145,12 @@ const Contact: React.FC = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
                     placeholder="Your full name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Email *
                   </label>
                   <input
@@ -159,14 +159,14 @@ const Contact: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Company
                 </label>
                 <input
@@ -174,13 +174,13 @@ const Contact: React.FC = () => {
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
                   placeholder="Your company name"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Project Details *
                 </label>
                 <textarea
@@ -189,7 +189,7 @@ const Contact: React.FC = () => {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
+                  className="w-full px-4 py-3 border border-gray-600 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none"
                   placeholder="Tell us about your project, goals, and timeline..."
                 />
               </div>
@@ -206,42 +206,42 @@ const Contact: React.FC = () => {
           
           <div className="space-y-8">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Get In Touch</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">Get In Touch</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-blue-600">📧</span>
+                  <div className="w-10 h-10 bg-green-900 rounded-lg flex items-center justify-center">
+                    <span className="text-green-400">📧</span>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Email</p>
-                    <p className="text-gray-600">{content.email}</p>
+                    <p className="font-medium text-white">Email</p>
+                    <p className="text-gray-300">{content.email}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-blue-600">📱</span>
+                  <div className="w-10 h-10 bg-green-900 rounded-lg flex items-center justify-center">
+                    <span className="text-green-400">📱</span>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">{content.phone}</p>
+                    <p className="font-medium text-white">Phone</p>
+                    <p className="text-gray-300">{content.phone}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-blue-600">📍</span>
+                  <div className="w-10 h-10 bg-green-900 rounded-lg flex items-center justify-center">
+                    <span className="text-green-400">📍</span>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Location</p>
-                    <p className="text-gray-600">{content.location}</p>
+                    <p className="font-medium text-white">Location</p>
+                    <p className="text-gray-300">{content.location}</p>
                   </div>
                 </div>
               </div>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
               <div className="flex gap-4">
                 {content.socialLinks?.map((social: any, index: number) => (
                   <a
@@ -249,10 +249,10 @@ const Contact: React.FC = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-gray-100 hover:bg-blue-100 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-10 h-10 bg-gray-700 hover:bg-green-900 rounded-lg flex items-center justify-center transition-colors"
                     title={social.name}
                   >
-                    <span className="text-sm font-medium text-gray-700">{social.name[0]}</span>
+                    <span className="text-sm font-medium text-gray-300">{social.name[0]}</span>
                   </a>
                 )) || ['LinkedIn', 'Twitter', 'GitHub', 'Dribbble'].map((social) => (
                   <a
@@ -260,9 +260,9 @@ const Contact: React.FC = () => {
                     href={`https://${social.toLowerCase()}.com`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-gray-100 hover:bg-blue-100 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-10 h-10 bg-gray-700 hover:bg-green-900 rounded-lg flex items-center justify-center transition-colors"
                   >
-                    <span className="text-sm font-medium text-gray-700">{social[0]}</span>
+                    <span className="text-sm font-medium text-gray-300">{social[0]}</span>
                   </a>
                 ))}
               </div>

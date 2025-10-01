@@ -31,10 +31,10 @@ const About: React.FC = () => {
 
   if (loading) {
     return (
-      <section id="about" className="py-20 bg-gray-50">
+      <section id="about" className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
+          <p className="mt-2 text-gray-300">Loading...</p>
         </div>
       </section>
     );
@@ -43,44 +43,44 @@ const About: React.FC = () => {
   const team = teamMembers.length > 0 ? teamMembers : defaultTeam;
 
   return (
-    <section id="about" className="py-20 bg-gray-50">
+    <section id="about" className="py-20 bg-gray-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {content.title}
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             {content.subtitle || 'We believe in the power of transformation through technology'}
           </p>
         </div>
         
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">The SuperShift Philosophy</h3>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
+            <h3 className="text-3xl font-bold text-white mb-6">The SuperShift Philosophy</h3>
+            <div className="space-y-4 text-gray-300 leading-relaxed">
               <p>{content.description}</p>
               {content.mission && (
                 <p>
-                  <strong>Our Mission:</strong> {content.mission}
+                  <strong className="text-white">Our Mission:</strong> {content.mission}
                 </p>
               )}
               {content.story && <p>{content.story}</p>}
             </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
-            <h4 className="text-2xl font-bold text-gray-900 mb-6">Why Choose Us?</h4>
+          <div className="bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-700">
+            <h4 className="text-2xl font-bold text-white mb-6">Why Choose Us?</h4>
             <div className="space-y-4">
               {(content.values || [
-                'Expert team with 50+ combined years of experience',
-                'Proven track record with 100+ successful projects',
-                'Full-stack capabilities from design to deployment',
-                'Agile development process with transparent communication',
-                'Post-launch support and continuous optimization'
+                'Skilled & Passionate Team – We bring diverse expertise and fresh thinking to every project.',
+                'Proven Results – Successful projects delivered across different industries.',
+                'Full-Stack Approach – From design to deployment, we handle the entire build.',
+                'Agile & Collaborative – Flexible process with clear communication at every stage.',
+                'Ongoing Partnership – Continuous support and optimization beyond launch.'
               ]).map((point: string, index: number) => (
                 <div key={index} className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0 shadow-glow"></div>
-                  <p className="text-gray-700">{point}</p>
+                  <p className="text-gray-300">{point}</p>
                 </div>
               ))}
             </div>
@@ -88,21 +88,21 @@ const About: React.FC = () => {
         </div>
         
         <div>
-          <h3 className="text-3xl font-bold text-gray-900 text-center mb-12">Meet Our Team</h3>
+          <h3 className="text-3xl font-bold text-white text-center mb-12">Meet Our Team</h3>
           <div className="grid md:grid-cols-3 gap-8">
             {team.map((member: any, index: number) => (
               <div 
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                className="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center border border-gray-700"
               >
                 <img 
                   src={member.image || '/placeholder.svg'}
                   alt={member.name}
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h4>
+                <h4 className="text-xl font-bold text-white mb-2">{member.name}</h4>
                 <p className="text-green-400 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                <p className="text-gray-300 text-sm leading-relaxed">{member.bio}</p>
               </div>
             ))}
           </div>
