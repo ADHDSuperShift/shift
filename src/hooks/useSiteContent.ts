@@ -123,45 +123,6 @@ export function useServices() {
   return { services, loading };
 }
 
-export function useTeamMembers() {
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadTeamMembers = async () => {
-      if (!isSupabaseConfigured) {
-        setTeamMembers([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('team_members')
-          .select('*')
-          .eq('is_active', true)
-          .order('display_order');
-
-        if (error) {
-          console.warn('Failed to load team members:', error);
-          setTeamMembers([]);
-        } else {
-          setTeamMembers(data || []);
-        }
-      } catch (err) {
-        console.warn('Team members load error:', err);
-        setTeamMembers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTeamMembers();
-  }, []);
-
-  return { teamMembers, loading };
-}
-
 export function useTestimonials() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);

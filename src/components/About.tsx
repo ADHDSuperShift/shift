@@ -1,33 +1,10 @@
 import React from 'react';
-import { useSiteContent, useTeamMembers } from '../hooks/useSiteContent';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 const About: React.FC = () => {
   const { content, loading: contentLoading } = useSiteContent('about');
-  const { teamMembers, loading: teamLoading } = useTeamMembers();
 
-  // Default fallback team data
-  const defaultTeam = [
-    {
-      name: 'Alex Thompson',
-      role: 'Founder & Lead Developer',
-      image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958855819_734aa605.webp',
-      bio: 'Full-stack developer with 10+ years of experience in modern web technologies.'
-    },
-    {
-      name: 'Maya Patel',
-      role: 'UI/UX Designer',
-      image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958857538_05331ed4.webp',
-      bio: 'Creative designer passionate about crafting beautiful and intuitive user experiences.'
-    },
-    {
-      name: 'James Wilson',
-      role: 'Cloud Architect',
-      image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958859280_df5c9330.webp',
-      bio: 'AWS certified architect specializing in scalable serverless solutions.'
-    }
-  ];
-
-  const loading = contentLoading || teamLoading;
+  const loading = contentLoading;
 
   if (loading) {
     return (
@@ -39,8 +16,6 @@ const About: React.FC = () => {
       </section>
     );
   }
-
-  const team = teamMembers.length > 0 ? teamMembers : defaultTeam;
 
   return (
     <section id="about" className="py-20 bg-gray-900">
@@ -84,27 +59,6 @@ const About: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-        
-        <div>
-          <h3 className="text-3xl font-bold text-white text-center mb-12">Meet Our Team</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {team.map((member: any, index: number) => (
-              <div 
-                key={index}
-                className="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center border border-gray-700"
-              >
-                <img 
-                  src={member.image || '/placeholder.svg'}
-                  alt={member.name}
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h4 className="text-xl font-bold text-white mb-2">{member.name}</h4>
-                <p className="text-green-400 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-300 text-sm leading-relaxed">{member.bio}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>

@@ -25,14 +25,13 @@ type Service = {
   is_active: boolean;
 };
 
-type TeamMember = {
+type Service = {
   id: string;
-  name: string;
-  role: string;
-  bio: string;
-  image: string;
-  linkedin_url?: string;
-  twitter_url?: string;
+  title: string;
+  description: string;
+  icon: string;
+  features: string[];
+  price_range?: string;
   display_order: number;
   is_active: boolean;
 };
@@ -60,9 +59,9 @@ type SiteContent = {
 const LOCAL_KEYS = {
   projects: 'sslabs_projects_v1',
   services: 'sslabs_services_v1',
-  team: 'sslabs_team_v1',
   testimonials: 'sslabs_testimonials_v1',
-  content: 'sslabs_content_v1'
+  content: 'sslabs_content_v1',
+  contacts: 'sslabs_contacts_v1'
 };
 
 function loadFromLocal<T>(key: string): T[] {
@@ -83,12 +82,11 @@ function saveToLocal<T>(key: string, items: T[]) {
 }
 
 const AdminDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'projects' | 'services' | 'team' | 'testimonials' | 'content' | 'contacts'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'services' | 'testimonials' | 'content' | 'contacts'>('projects');
   
   // State for all content types
   const [projects, setProjects] = useState<Project[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [siteContent, setSiteContent] = useState<SiteContent[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
@@ -110,10 +108,6 @@ const AdminDashboard: React.FC = () => {
     title: '', description: '', icon: '💻', features: '', price_range: '', display_order: 0
   });
 
-  const [newTeamMember, setNewTeamMember] = useState({
-    name: '', role: '', bio: '', image: '/placeholder.svg', linkedin_url: '', twitter_url: '', display_order: 0
-  });
-
   const [newTestimonial, setNewTestimonial] = useState({
     client_name: '', client_company: '', client_role: '', testimonial: '', client_image: '/placeholder.svg', rating: 5, is_featured: false, display_order: 0
   });
@@ -133,10 +127,9 @@ const AdminDashboard: React.FC = () => {
     if (usingDb) {
       try {
         // Load all data from Supabase
-        const [projectsRes, servicesRes, teamRes, testimonialsRes, contentRes, contactsRes] = await Promise.all([
+        const [projectsRes, servicesRes, testimonialsRes, contentRes, contactsRes] = await Promise.all([
           supabase.from('projects').select('*').order('created_at', { ascending: false }),
           supabase.from('services').select('*').order('display_order'),
-          supabase.from('team_members').select('*').order('display_order'),
           supabase.from('testimonials').select('*').order('display_order'),
           supabase.from('site_content').select('*'),
           supabase.from('contacts').select('*').order('created_at', { ascending: false }).limit(50)
@@ -147,9 +140,6 @@ const AdminDashboard: React.FC = () => {
 
         if (servicesRes.error) console.warn('Services load error:', servicesRes.error);
         else setServices(servicesRes.data || []);
-
-        if (teamRes.error) console.warn('Team load error:', teamRes.error);
-        else setTeamMembers(teamRes.data || []);
 
         if (testimonialsRes.error) console.warn('Testimonials load error:', testimonialsRes.error);
         else setTestimonials(testimonialsRes.data || []);
@@ -180,7 +170,6 @@ const AdminDashboard: React.FC = () => {
   const loadFromLocalStorage = () => {
     setProjects(loadFromLocal<Project>(LOCAL_KEYS.projects));
     setServices(loadFromLocal<Service>(LOCAL_KEYS.services));
-    setTeamMembers(loadFromLocal<TeamMember>(LOCAL_KEYS.team));
     setTestimonials(loadFromLocal<Testimonial>(LOCAL_KEYS.testimonials));
     const content = loadFromLocal<SiteContent>(LOCAL_KEYS.content);
     setSiteContent(content);
@@ -340,45 +329,6 @@ const AdminDashboard: React.FC = () => {
     if (usingDb) loadAllData();
   };
 
-  // Team member functions
-  const handleAddTeamMember = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    const payload: Omit<TeamMember, 'id'> = {
-      name: newTeamMember.name.trim(),
-      role: newTeamMember.role.trim(),
-      bio: newTeamMember.bio.trim(),
-      image: newTeamMember.image,
-      linkedin_url: newTeamMember.linkedin_url || null,
-      twitter_url: newTeamMember.twitter_url || null,
-      display_order: newTeamMember.display_order,
-      is_active: true
-    };
-
-    if (!payload.name || !payload.role || !payload.bio) {
-      setError('Please fill in name, role, and bio.');
-      return;
-    }
-
-    if (usingDb) {
-      const { error } = await supabase.from('team_members').insert([payload]);
-      if (error) {
-        setError('Failed to add team member: ' + error.message);
-        return;
-      }
-    } else {
-      const local = loadFromLocal<TeamMember>(LOCAL_KEYS.team);
-      const item: TeamMember = { id: crypto.randomUUID(), ...payload };
-      const next = [...local, item];
-      saveToLocal(LOCAL_KEYS.team, next);
-      setTeamMembers(next);
-    }
-
-    setNewTeamMember({ name: '', role: '', bio: '', image: '/placeholder.svg', linkedin_url: '', twitter_url: '', display_order: 0 });
-    if (usingDb) loadAllData();
-  };
-
   // Content update function
   const handleUpdateContent = async (section: string) => {
     if (!editingContent[section]) return;
@@ -430,7 +380,7 @@ const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-lg shadow-lg">
           <div className="border-b border-gray-200">
             <nav className="flex overflow-x-auto">
-              {(['projects', 'services', 'team', 'testimonials', 'content', 'contacts'] as const).map((tab) => (
+              {(['projects', 'services', 'testimonials', 'content', 'contacts'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -471,13 +421,13 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Project Title"
                           value={newProject.title}
                           onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                           required
                         />
                         <select
                           value={newProject.category}
                           onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                         >
                           <option value="Web Application">Web Application</option>
                           <option value="Mobile App">Mobile App</option>
@@ -488,7 +438,7 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Project Description"
                           value={newProject.description}
                           onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 md:col-span-2"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 md:col-span-2 text-gray-900 bg-white"
                           rows={3}
                           required
                         />
@@ -497,7 +447,7 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Technologies (comma-separated)"
                           value={newProject.technologies}
                           onChange={(e) => setNewProject({ ...newProject, technologies: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                           required
                         />
                         <input
@@ -505,7 +455,7 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Demo URL (optional)"
                           value={newProject.demo_url}
                           onChange={(e) => setNewProject({ ...newProject, demo_url: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                         />
                         <div className="md:col-span-2">
                           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -540,13 +490,13 @@ const AdminDashboard: React.FC = () => {
                               placeholder="Project Title"
                               value={editProjectForm.title}
                               onChange={(e) => setEditProjectForm({ ...editProjectForm, title: e.target.value })}
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                               required
                             />
                             <select
                               value={editProjectForm.category}
                               onChange={(e) => setEditProjectForm({ ...editProjectForm, category: e.target.value })}
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                             >
                               <option value="Web Application">Web Application</option>
                               <option value="Mobile App">Mobile App</option>
@@ -558,7 +508,7 @@ const AdminDashboard: React.FC = () => {
                               placeholder="Project Description"
                               value={editProjectForm.description}
                               onChange={(e) => setEditProjectForm({ ...editProjectForm, description: e.target.value })}
-                              className="md:col-span-2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-vertical"
+                              className="md:col-span-2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-vertical text-gray-900 bg-white"
                               required
                             />
                             <input
@@ -566,7 +516,7 @@ const AdminDashboard: React.FC = () => {
                               placeholder="Technologies (comma-separated)"
                               value={editProjectForm.technologies}
                               onChange={(e) => setEditProjectForm({ ...editProjectForm, technologies: e.target.value })}
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                               required
                             />
                             <input
@@ -574,7 +524,7 @@ const AdminDashboard: React.FC = () => {
                               placeholder="Demo URL (optional)"
                               value={editProjectForm.demo_url}
                               onChange={(e) => setEditProjectForm({ ...editProjectForm, demo_url: e.target.value })}
-                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                             />
                             <div className="md:col-span-2">
                               <label className="block text-sm font-medium text-gray-700 mb-2">Project Image</label>
@@ -664,7 +614,7 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Service Title"
                           value={newService.title}
                           onChange={(e) => setNewService({ ...newService, title: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                           required
                         />
                         <input
@@ -672,13 +622,13 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Icon (emoji or text)"
                           value={newService.icon}
                           onChange={(e) => setNewService({ ...newService, icon: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                         />
                         <textarea
                           placeholder="Service Description"
                           value={newService.description}
                           onChange={(e) => setNewService({ ...newService, description: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 md:col-span-2"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 md:col-span-2 text-gray-900 bg-white"
                           rows={3}
                           required
                         />
@@ -687,14 +637,14 @@ const AdminDashboard: React.FC = () => {
                           placeholder="Features (comma-separated)"
                           value={newService.features}
                           onChange={(e) => setNewService({ ...newService, features: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                         />
                         <input
                           type="text"
                           placeholder="Price Range (optional)"
                           value={newService.price_range}
                           onChange={(e) => setNewService({ ...newService, price_range: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                         />
                         <button
                           type="submit"
@@ -728,95 +678,6 @@ const AdminDashboard: React.FC = () => {
                             {service.price_range && (
                               <p className="text-sm text-green-600 font-medium mb-3">Price: {service.price_range}</p>
                             )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Team Tab */}
-                {activeTab === 'team' && (
-                  <div>
-                    <div className="mb-8">
-                      <h2 className="text-xl font-bold text-gray-900 mb-4">Add Team Member</h2>
-                      <form onSubmit={handleAddTeamMember} className="grid md:grid-cols-2 gap-4">
-                        <input
-                          type="text"
-                          placeholder="Full Name"
-                          value={newTeamMember.name}
-                          onChange={(e) => setNewTeamMember({ ...newTeamMember, name: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          required
-                        />
-                        <input
-                          type="text"
-                          placeholder="Role/Position"
-                          value={newTeamMember.role}
-                          onChange={(e) => setNewTeamMember({ ...newTeamMember, role: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                          required
-                        />
-                        <textarea
-                          placeholder="Bio"
-                          value={newTeamMember.bio}
-                          onChange={(e) => setNewTeamMember({ ...newTeamMember, bio: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 md:col-span-2"
-                          rows={3}
-                          required
-                        />
-                        <input
-                          type="url"
-                          placeholder="LinkedIn URL (optional)"
-                          value={newTeamMember.linkedin_url}
-                          onChange={(e) => setNewTeamMember({ ...newTeamMember, linkedin_url: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                        />
-                        <input
-                          type="url"
-                          placeholder="Twitter URL (optional)"
-                          value={newTeamMember.twitter_url}
-                          onChange={(e) => setNewTeamMember({ ...newTeamMember, twitter_url: e.target.value })}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                        />
-                        <div className="md:col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Profile Photo
-                          </label>
-                          <FileUpload
-                            onFileUploaded={(url) => setNewTeamMember({ ...newTeamMember, image: url })}
-                            folder="team"
-                            currentImage={newTeamMember.image !== '/placeholder.svg' ? newTeamMember.image : undefined}
-                            className="w-full"
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          className="md:col-span-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                        >
-                          Add Team Member
-                        </button>
-                      </form>
-                    </div>
-
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-900 mb-4">Team Members ({teamMembers.length})</h2>
-                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {teamMembers.map((member) => (
-                          <div key={member.id} className="bg-gray-50 p-4 rounded-lg">
-                            <h3 className="font-bold text-lg">{member.name}</h3>
-                            <p className="text-green-600 font-medium mb-2">{member.role}</p>
-                            <p className="text-gray-700 text-sm mb-3">{member.bio}</p>
-                            <div className="flex gap-2">
-                              {member.linkedin_url && (
-                                <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" 
-                                   className="text-blue-600 text-sm">LinkedIn</a>
-                              )}
-                              {member.twitter_url && (
-                                <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" 
-                                   className="text-blue-400 text-sm">Twitter</a>
-                              )}
-                            </div>
                           </div>
                         ))}
                       </div>
