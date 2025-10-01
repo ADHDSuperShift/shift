@@ -1,3 +1,4 @@
+"use client";
 import Navigation from '../src/components/Navigation'
 import Hero from '../src/components/Hero'
 import Services from '../src/components/Services'
