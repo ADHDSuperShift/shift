@@ -29,6 +29,12 @@ export const uploadFile = async (file: File, folder: string = ''): Promise<{
       });
 
     if (error) {
+      // Handle specific RLS policy errors
+      if (error.message.includes('row-level security policy') || error.message.includes('new row violates')) {
+        return { 
+          error: 'Storage upload permissions not configured. Please contact administrator to set up storage policies.' 
+        };
+      }
       throw error;
     }
 
@@ -40,7 +46,18 @@ export const uploadFile = async (file: File, folder: string = ''): Promise<{
     return { url: publicUrl };
   } catch (error) {
     console.error('Upload error:', error);
-    return { error: error instanceof Error ? error.message : 'Upload failed' };
+    
+    // Provide more specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('row-level security policy') || error.message.includes('new row violates')) {
+        return { 
+          error: 'Storage upload permissions not configured. Please contact administrator to set up storage policies.' 
+        };
+      }
+      return { error: error.message };
+    }
+    
+    return { error: 'Upload failed' };
   }
 };
 

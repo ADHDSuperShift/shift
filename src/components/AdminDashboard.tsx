@@ -101,6 +101,11 @@ const AdminDashboard: React.FC = () => {
     title: '', category: 'Web Application', description: '', technologies: '', image: '/placeholder.svg', demo_url: ''
   });
 
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [editProjectForm, setEditProjectForm] = useState({
+    title: '', category: '', description: '', technologies: '', image: '', demo_url: ''
+  });
+
   const [newService, setNewService] = useState({
     title: '', description: '', icon: '💻', features: '', price_range: '', display_order: 0
   });
@@ -236,6 +241,65 @@ const AdminDashboard: React.FC = () => {
       saveToLocal(LOCAL_KEYS.projects, next);
       setProjects(next);
     }
+  };
+
+  const handleEditProject = (project: Project) => {
+    setEditingProject(project);
+    setEditProjectForm({
+      title: project.title,
+      category: project.category,
+      description: project.description,
+      technologies: project.technologies.join(', '),
+      image: project.image,
+      demo_url: project.demo_url || ''
+    });
+  };
+
+  const handleUpdateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProject) return;
+    
+    setError(null);
+
+    const payload = {
+      title: editProjectForm.title.trim(),
+      category: editProjectForm.category.trim(),
+      description: editProjectForm.description.trim(),
+      technologies: editProjectForm.technologies.split(',').map(t => t.trim()).filter(Boolean),
+      image: editProjectForm.image,
+      demo_url: editProjectForm.demo_url || null,
+    };
+
+    if (!payload.title || !payload.description || payload.technologies.length === 0) {
+      setError('Please fill in title, description, and at least one technology.');
+      return;
+    }
+
+    if (usingDb) {
+      const { error } = await supabase
+        .from('projects')
+        .update(payload)
+        .eq('id', editingProject.id);
+      
+      if (error) {
+        setError('Failed to update project: ' + error.message);
+        return;
+      }
+      loadAllData();
+    } else {
+      const updatedProject: Project = { ...editingProject, ...payload };
+      const next = projects.map(p => p.id === editingProject.id ? updatedProject : p);
+      saveToLocal(LOCAL_KEYS.projects, next);
+      setProjects(next);
+    }
+
+    setEditingProject(null);
+    setEditProjectForm({ title: '', category: '', description: '', technologies: '', image: '', demo_url: '' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProject(null);
+    setEditProjectForm({ title: '', category: '', description: '', technologies: '', image: '', demo_url: '' });
   };
 
   // Service functions
@@ -465,6 +529,81 @@ const AdminDashboard: React.FC = () => {
 
                     <div>
                       <h2 className="text-xl font-bold text-gray-900 mb-4">Current Projects ({projects.length})</h2>
+                      
+                      {/* Edit Project Form */}
+                      {editingProject && (
+                        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Project</h3>
+                          <form onSubmit={handleUpdateProject} className="grid md:grid-cols-2 gap-4">
+                            <input
+                              type="text"
+                              placeholder="Project Title"
+                              value={editProjectForm.title}
+                              onChange={(e) => setEditProjectForm({ ...editProjectForm, title: e.target.value })}
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              required
+                            />
+                            <select
+                              value={editProjectForm.category}
+                              onChange={(e) => setEditProjectForm({ ...editProjectForm, category: e.target.value })}
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="Web Application">Web Application</option>
+                              <option value="Mobile App">Mobile App</option>
+                              <option value="Desktop App">Desktop App</option>
+                              <option value="API">API</option>
+                              <option value="Other">Other</option>
+                            </select>
+                            <textarea
+                              placeholder="Project Description"
+                              value={editProjectForm.description}
+                              onChange={(e) => setEditProjectForm({ ...editProjectForm, description: e.target.value })}
+                              className="md:col-span-2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-vertical"
+                              required
+                            />
+                            <input
+                              type="text"
+                              placeholder="Technologies (comma-separated)"
+                              value={editProjectForm.technologies}
+                              onChange={(e) => setEditProjectForm({ ...editProjectForm, technologies: e.target.value })}
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              required
+                            />
+                            <input
+                              type="url"
+                              placeholder="Demo URL (optional)"
+                              value={editProjectForm.demo_url}
+                              onChange={(e) => setEditProjectForm({ ...editProjectForm, demo_url: e.target.value })}
+                              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            />
+                            <div className="md:col-span-2">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Project Image</label>
+                              <FileUpload
+                                onFileUploaded={(url) => setEditProjectForm({ ...editProjectForm, image: url })}
+                                folder="projects"
+                                currentImage={editProjectForm.image !== '/placeholder.svg' ? editProjectForm.image : undefined}
+                                className="w-full"
+                              />
+                            </div>
+                            <div className="md:col-span-2 flex gap-4">
+                              <button
+                                type="submit"
+                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500"
+                              >
+                                Update Project
+                              </button>
+                              <button
+                                type="button"
+                                onClick={handleCancelEdit}
+                                className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-gray-500"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
+
                       {projects.length === 0 ? (
                         <div className="text-center py-8">
                           <p className="text-gray-600">No projects found. Add your first project above!</p>
@@ -476,6 +615,13 @@ const AdminDashboard: React.FC = () => {
                               <h3 className="font-bold text-lg mb-2">{project.title}</h3>
                               <p className="text-sm text-gray-600 mb-2">{project.category}</p>
                               <p className="text-gray-700 mb-3">{project.description}</p>
+                              {project.demo_url && (
+                                <p className="text-sm text-blue-600 mb-2">
+                                  <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    🔗 View Demo
+                                  </a>
+                                </p>
+                              )}
                               <div className="mb-3">
                                 <div className="flex flex-wrap gap-1 mt-1">
                                   {project.technologies.map((tech, index) => (
@@ -485,12 +631,20 @@ const AdminDashboard: React.FC = () => {
                                   ))}
                                 </div>
                               </div>
-                              <button
-                                onClick={() => handleDeleteProject(project.id)}
-                                className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-                              >
-                                Delete
-                              </button>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleEditProject(project)}
+                                  className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteProject(project.id)}
+                                  className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 focus:ring-2 focus:ring-red-500"
+                                >
+                                  Delete
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>

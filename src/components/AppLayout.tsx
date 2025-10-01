@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@/contexts/AppContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import Navigation from './Navigation';
@@ -11,12 +11,26 @@ import About from './About';
 import Contact from './Contact';
 import Footer from './Footer';
 import AdminDashboard from './AdminDashboard';
+import AdminAuth from './AdminAuth';
 import SEOChecker from './SEOChecker';
 
 const AppLayout: React.FC = () => {
   const { sidebarOpen, toggleSidebar } = useAppContext();
   const isMobile = useIsMobile();
   const [showAdmin, setShowAdmin] = useState(false);
+
+  // Listen for admin access shortcut (Ctrl+Shift+A)
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        setShowAdmin(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   // Simple admin toggle (in production, this would be behind authentication)
   const toggleAdmin = () => {
@@ -25,15 +39,17 @@ const AppLayout: React.FC = () => {
 
   if (showAdmin) {
     return (
-      <div>
-        <button
-          onClick={toggleAdmin}
-          className="fixed top-4 right-4 z-50 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
-        >
-          Back to Site
-        </button>
-        <AdminDashboard />
-      </div>
+      <AdminAuth>
+        <div>
+          <button
+            onClick={toggleAdmin}
+            className="fixed top-4 right-20 z-50 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            Back to Site
+          </button>
+          <AdminDashboard />
+        </div>
+      </AdminAuth>
     );
   }
 
