@@ -1,52 +1,82 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useTestimonials } from '../hooks/useSiteContent';
 
 const ClientsCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { testimonials, loading } = useTestimonials();
   
-  const clients = [
+  // Fallback data in case database is not available
+  const fallbackClients = [
     {
-      logo: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958839362_88f2f015.webp',
-      name: 'TechCorp Solutions',
+      client_image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958839362_88f2f015.webp',
+      client_company: 'TechCorp Solutions',
       testimonial: 'SuperShift Labs transformed our digital presence with an incredible web platform.',
-      author: 'Sarah Johnson, CEO'
+      client_name: 'Sarah Johnson',
+      client_role: 'CEO'
     },
     {
-      logo: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958841219_639411ea.webp',
-      name: 'InnovateTech',
+      client_image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958841219_639411ea.webp',
+      client_company: 'InnovateTech',
       testimonial: 'Their mobile app development exceeded our expectations in every way.',
-      author: 'Michael Chen, CTO'
+      client_name: 'Michael Chen',
+      client_role: 'CTO'
     },
     {
-      logo: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958843237_e35a677e.webp',
-      name: 'CloudFirst Inc',
+      client_image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958843237_e35a677e.webp',
+      client_company: 'CloudFirst Inc',
       testimonial: 'Exceptional cloud architecture and seamless AWS integration.',
-      author: 'Emily Rodriguez, VP Engineering'
+      client_name: 'Emily Rodriguez',
+      client_role: 'VP Engineering'
     },
     {
-      logo: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958844917_bc5807c2.webp',
-      name: 'StartupLab',
+      client_image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958844917_bc5807c2.webp',
+      client_company: 'StartupLab',
       testimonial: 'From concept to launch, they delivered a world-class product.',
-      author: 'David Kim, Founder'
+      client_name: 'David Kim',
+      client_role: 'Founder'
     },
     {
-      logo: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958846898_49d5b508.webp',
-      name: 'DigitalFlow',
+      client_image: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958846898_49d5b508.webp',
+      client_company: 'DigitalFlow',
       testimonial: 'Outstanding design and development work that drove real business results.',
-      author: 'Lisa Wang, Marketing Director'
+      client_name: 'Lisa Wang',
+      client_role: 'Marketing Director'
     }
   ];
 
+  // Use database testimonials or fallback to hardcoded ones
+  const clients = testimonials.length > 0 ? testimonials : fallbackClients;
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % clients.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    if (clients.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % clients.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
   }, [clients.length]);
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-gradient-to-r from-blue-900 to-slate-900">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
+          <p className="mt-2 text-blue-200">Loading testimonials...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (clients.length === 0) {
+    return null;
+  }
+
+  const currentClient = clients[currentIndex];
 
   return (
     <section className="py-20 bg-gradient-to-r from-blue-900 to-slate-900">
@@ -65,19 +95,22 @@ const ClientsCarousel: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-shrink-0">
                 <img 
-                  src={clients[currentIndex].logo}
-                  alt={clients[currentIndex].name}
+                  src={currentClient.client_image || '/placeholder.svg'}
+                  alt={currentClient.client_company}
                   className="w-24 h-24 object-contain rounded-lg"
                 />
               </div>
               
               <div className="flex-1 text-center md:text-left">
                 <blockquote className="text-xl md:text-2xl text-gray-800 font-medium mb-4 leading-relaxed">
-                  "{clients[currentIndex].testimonial}"
+                  "{currentClient.testimonial}"
                 </blockquote>
                 <div className="text-gray-600">
-                  <p className="font-semibold">{clients[currentIndex].author}</p>
-                  <p className="text-sm">{clients[currentIndex].name}</p>
+                  <p className="font-semibold">
+                    {currentClient.client_name}
+                    {currentClient.client_role && `, ${currentClient.client_role}`}
+                  </p>
+                  <p className="text-sm">{currentClient.client_company}</p>
                 </div>
               </div>
             </div>

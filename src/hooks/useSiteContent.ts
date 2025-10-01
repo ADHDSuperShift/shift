@@ -161,3 +161,42 @@ export function useTeamMembers() {
 
   return { teamMembers, loading };
 }
+
+export function useTestimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      if (!isSupabaseConfigured) {
+        setTestimonials([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order');
+
+        if (error) {
+          console.warn('Failed to load testimonials:', error);
+          setTestimonials([]);
+        } else {
+          setTestimonials(data || []);
+        }
+      } catch (err) {
+        console.warn('Testimonials load error:', err);
+        setTestimonials([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTestimonials();
+  }, []);
+
+  return { testimonials, loading };
+}
