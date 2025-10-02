@@ -4,21 +4,9 @@ import { useSiteContent, useProjects } from '../hooks/useSiteContent';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
-  const { content, loading: contentLoading } = useSiteContent('projects');
-  const { projects, loading: projectsLoading } = useProjects();
+  const { content } = useSiteContent('projects');
+  const { projects } = useProjects();
 
-  const loading = contentLoading || projectsLoading;
-
-  if (loading) {
-    return (
-      <section id="projects" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
-        </div>
-      </section>
-    );
-  }
 
   const filteredProjects = filter === 'all' ? projects : projects.filter((p: any) => p.category === filter);
 

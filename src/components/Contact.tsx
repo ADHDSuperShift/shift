@@ -124,16 +124,6 @@ const [showForm, setShowForm] = useState(false);
     }
   };
 
-  if (loading) {
-    return (
-      <section id="contact" className="py-20 bg-gray-800">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
-          <p className="mt-2 text-gray-300">Loading...</p>
-        </div>
-      </section>
-    );
-  }
 
   if (submitted) {
     return (

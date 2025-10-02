@@ -33,18 +33,6 @@ const Services: React.FC = () => {
     }
   ];
 
-  const loading = contentLoading || servicesLoading;
-
-  if (loading) {
-    return (
-      <section id="services" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
-        </div>
-      </section>
-    );
-  }
 
   const displayServices = services.length > 0 ? services : defaultServices;
 

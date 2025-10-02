@@ -2,20 +2,8 @@ import React from 'react';
 import { useSiteContent } from '../hooks/useSiteContent';
 
 const About: React.FC = () => {
-  const { content, loading: contentLoading } = useSiteContent('about');
+  const { content } = useSiteContent('about');
 
-  const loading = contentLoading;
-
-  if (loading) {
-    return (
-      <section id="about" className="py-20 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
-          <p className="mt-2 text-gray-300">Loading...</p>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="about" className="py-20 bg-gray-900">

@@ -15,13 +15,6 @@ const Hero: React.FC = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (loading) {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-green-900/20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400"></div>
-      </section>
-    );
-  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-green-900/20">
