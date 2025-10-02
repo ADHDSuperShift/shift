@@ -359,7 +359,7 @@ const AdminDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Content Management System</h1>
-          <p className="text-gray-600">Manage all aspects of your SuperShift Labs website</p>
+          <p className="text-gray-600">Manage all aspects of your Super<span className="text-green-500 font-semibold">Shift</span> Labs website</p>
           {!usingDb && (
             <p className="mt-2 text-xs text-amber-700 bg-amber-50 inline-block px-2 py-1 rounded border border-amber-200">
               Running in frontend-only mode. Connect Supabase to persist data across browsers.

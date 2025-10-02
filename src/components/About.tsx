@@ -31,7 +31,7 @@ const About: React.FC = () => {
         
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h3 className="text-3xl font-bold text-white mb-6">The SuperShift Philosophy</h3>
+            <h3 className="text-3xl font-bold text-white mb-6">The Super<span className="text-green-400">Shift</span> Philosophy</h3>
             <div className="space-y-4 text-gray-300 leading-relaxed">
               <p>{content.description}</p>
               {content.mission && (
