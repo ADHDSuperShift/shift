@@ -24,7 +24,6 @@ const Navigation: React.FC = () => {
     { name: 'Projects', id: 'projects' },
     { name: 'SEO Check', id: 'seo-checker' },
     { name: 'About', id: 'about' },
-    { name: 'Contact', id: 'contact' }
   ];
 
   return (
