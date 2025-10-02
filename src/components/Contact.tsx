@@ -48,7 +48,8 @@ const Contact: React.FC = () => {
     ]
   });
 
-  const [formData, setFormData] = useState({
+const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
@@ -162,8 +163,29 @@ const Contact: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-12">
+        {!showForm ? (
+          <div className="text-center">
+            <button
+              onClick={() => setShowForm(true)}
+              className="inline-flex items-center gap-3 px-12 py-6 bg-green-500 hover:bg-green-600 text-white text-xl font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-green-500/50 hover:shadow-green-500/70"
+            >
+              <span>💬</span>
+              <span>Let's Chat</span>
+            </button>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-2 gap-12">
           <div>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-white">Send us a message</h3>
+              <button
+                onClick={() => setShowForm(false)}
+                className="text-gray-400 hover:text-white transition-colors text-2xl"
+                title="Close form"
+              >
+                ✕
+              </button>
+            </div>
             {error && (
               <div className="mb-6 bg-red-900 border border-red-700 rounded-lg p-4">
                 <p className="text-red-300">{error}</p>
@@ -309,8 +331,9 @@ const Contact: React.FC = () => {
                 ))}
               </div>
             </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
