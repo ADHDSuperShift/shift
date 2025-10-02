@@ -27,10 +27,10 @@ const Projects: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            {content.title || 'Our Projects'}
+            {content.title || 'Current Projects'}
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            {content.description || 'Explore our portfolio of successful digital solutions and innovative applications'}
+            {content.description || 'Explore current portfolio of current digital solutions and innovative applications'}
           </p>
           
           <div className="flex justify-center gap-4 mb-8">
