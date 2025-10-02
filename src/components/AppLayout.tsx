@@ -6,7 +6,6 @@ import Navigation from './Navigation';
 import Hero from './Hero';
 import Services from './Services';
 import Projects from './Projects';
-import ClientsCarousel from './ClientsCarousel';
 import About from './About';
 import Contact from './Contact';
 import Footer from './Footer';
@@ -59,7 +58,6 @@ const AppLayout: React.FC = () => {
       <Hero />
       <Services />
       <Projects />
-      <ClientsCarousel />
       <About />
       <SEOChecker />
       <Contact />
