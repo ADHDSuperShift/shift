@@ -13,6 +13,7 @@ type Project = {
   demo_url?: string | null;
   created_at?: string;
 };
+
 type Service = {
   id: string;
   title: string;
@@ -23,7 +24,6 @@ type Service = {
   display_order: number;
   is_active: boolean;
 };
-
 
 
 type Testimonial = {
