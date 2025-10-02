@@ -61,7 +61,7 @@ const Hero: React.FC = () => {
           </button>
           <button 
             onClick={() => scrollToSection('projects')}
-            className="px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
+            className="hidden sm:block px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             See Projects
           </button>
