@@ -15,7 +15,7 @@ const Projects: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            {content?.title || 'Current Projects'}
+            Current Projects
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
             {content?.description || 'Explore our current portfolio of successful digital solutions and innovative applications'}
