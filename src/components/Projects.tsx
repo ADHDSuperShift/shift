@@ -18,7 +18,7 @@ const Projects: React.FC = () => {
             {content?.title || 'Current Projects'}
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            {content?.description || 'Explore our portfolio of digital solutions and innovative applications'}
+            {content?.description || 'Explore our current portfolio of successful digital solutions and innovative applications'}
           </p>
           
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8">
