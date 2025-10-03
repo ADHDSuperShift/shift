@@ -61,16 +61,6 @@ const ClientsCarousel: React.FC = () => {
     setCurrentIndex(index);
   };
 
-  if (loading) {
-    return (
-      <section className="py-20 bg-gradient-to-r from-blue-900 to-slate-900">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
-          <p className="mt-2 text-blue-200">Loading testimonials...</p>
-        </div>
-      </section>
-    );
-  }
 
   if (clients.length === 0) {
     return null;
