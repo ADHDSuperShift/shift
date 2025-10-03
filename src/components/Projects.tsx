@@ -14,19 +14,19 @@ const Projects: React.FC = () => {
     <section id="projects" className="py-20 bg-gray-800">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {content.title || 'Current Projects'}
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
             {content.description || 'Explore current portfolio of current digital solutions and innovative applications'}
           </p>
           
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8">
             {['all', 'web', 'mobile'].map((category) => (
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                className={`px-4 sm:px-6 py-2 rounded-full font-medium text-sm sm:text-base transition-all duration-300 ${
                   filter === category
                     ? 'bg-green-600 text-white shadow-lg shadow-green-500/25'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
