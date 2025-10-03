@@ -14,10 +14,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://shift-labs.vercel.app'),
   title: {
-    default: 'SuperShift Labs | Web Development & Digital Solutions in Cape Town',
+    default: 'SuperShift Labs | Web & Mobile Development',
     template: '%s | SuperShift Labs'
   },
-  description: 'Expert web development, mobile app development, and cloud solutions in Cape Town, South Africa. Transform your business with custom software, e-commerce platforms, and digital innovation. Free SEO audit included.',
+  description: 'Expert web & mobile app development in Cape Town. We build high-performance websites, mobile apps, and cloud solutions that drive results.',
   keywords: [
     'web development Cape Town',
     'mobile app development South Africa', 
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     url: 'https://shift-labs.vercel.app',
     siteName: 'SuperShift Labs',
-    title: 'SuperShift Labs | Web Development & Digital Solutions in Cape Town',
-    description: 'Expert web development, mobile app development, and cloud solutions in Cape Town, South Africa. Transform your business with custom software and digital innovation.',
+    title: 'SuperShift Labs | Web & Mobile Development',
+    description: 'Expert web & mobile app development in Cape Town. We build high-performance websites, mobile apps, and cloud solutions that drive results.',
     images: [
       {
         url: 'https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958817530_82b6efd2.webp',
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SuperShift Labs | Web Development & Digital Solutions',
-    description: 'Transform your business with expert web development, mobile apps, and cloud solutions in Cape Town, South Africa.',
+    title: 'SuperShift Labs | Web & Mobile Development',
+    description: 'Expert web & mobile app development in Cape Town. High-performance websites, apps, and cloud solutions that drive results.',
     images: ['https://d64gsuwffb70l.cloudfront.net/68d794bf6b2a864c0bdbf728_1758958817530_82b6efd2.webp'],
   },
   robots: {
@@ -160,6 +160,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Resource Hints for Performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://d64gsuwffb70l.cloudfront.net" />
+        <link rel="preconnect" href="https://d64gsuwffb70l.cloudfront.net" />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
