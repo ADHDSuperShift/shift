@@ -28,51 +28,29 @@ const SEOChecker: React.FC = () => {
       return;
     }
 
-    // Basic URL validation
-    try {
-      new URL(url);
-    } catch {
-      setError('Please enter a valid URL (e.g., https://example.com)');
-      return;
-    }
-
     setLoading(true);
     setError('');
-    setResult(null);
     
-    try {
-      const response = await fetch('/api/seo-check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to analyze URL');
-      }
-
-      const data = await response.json();
-      
-      // Transform API response to match component's expected format
-      const result: SEOResult = {
-        score: data.score,
-        title: data.analysis.title || 'No title found',
-        description: data.analysis.description || 'No description found',
-        headings: data.analysis.totalHeadings,
-        images: data.analysis.totalImages,
-        links: data.analysis.totalLinks,
-        recommendations: data.recommendations || [],
+    // Simulate SEO analysis
+    setTimeout(() => {
+      const mockResult: SEOResult = {
+        score: Math.floor(Math.random() * 40) + 60, // Random score 60-100
+        title: 'Page Title Found',
+        description: 'Meta description present',
+        headings: Math.floor(Math.random() * 10) + 1,
+        images: Math.floor(Math.random() * 20) + 5,
+        links: Math.floor(Math.random() * 50) + 10,
+        recommendations: [
+          'Add more descriptive alt text to images',
+          'Improve page loading speed',
+          'Add structured data markup',
+          'Optimize meta descriptions',
+          'Include more internal links'
+        ]
       };
-      
-      setResult(result);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to analyze URL. Please try again.');
-    } finally {
+      setResult(mockResult);
       setLoading(false);
-    }
+    }, 2000);
   };
 
   const getScoreColor = (score: number) => {

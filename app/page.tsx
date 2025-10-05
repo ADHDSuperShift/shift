@@ -7,6 +7,7 @@ import About from '../src/components/About'
 import Contact from '../src/components/Contact'
 import Footer from '../src/components/Footer'
 import AdminButton from '../src/components/AdminButton'
+import WhatsAppButton from '../src/components/WhatsAppButton'
 import SEOChecker from '../src/components/SEOChecker'
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
       </main>
       <Footer />
       <AdminButton />
+      <WhatsAppButton />
     </div>
   )
 }

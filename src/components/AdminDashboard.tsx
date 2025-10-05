@@ -25,20 +25,6 @@ type Service = {
   is_active: boolean;
 };
 
-
-type Testimonial = {
-  id: string;
-  client_name: string;
-  client_company: string;
-  client_role?: string;
-  testimonial: string;
-  client_image?: string;
-  rating: number;
-  is_featured: boolean;
-  display_order: number;
-  is_active: boolean;
-};
-
 type SiteContent = {
   id: string;
   section: string;
@@ -49,7 +35,6 @@ type SiteContent = {
 const LOCAL_KEYS = {
   projects: 'sslabs_projects_v1',
   services: 'sslabs_services_v1',
-  testimonials: 'sslabs_testimonials_v1',
   content: 'sslabs_content_v1',
   contacts: 'sslabs_contacts_v1'
 };
@@ -72,12 +57,11 @@ function saveToLocal<T>(key: string, items: T[]) {
 }
 
 const AdminDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'projects' | 'services' | 'testimonials' | 'content' | 'contacts'>('projects');
+  const [activeTab, setActiveTab] = useState<'projects' | 'services' | 'content' | 'contacts'>('projects');
   
   // State for all content types
   const [projects, setProjects] = useState<Project[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [siteContent, setSiteContent] = useState<SiteContent[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
   
@@ -98,10 +82,6 @@ const AdminDashboard: React.FC = () => {
     title: '', description: '', icon: '💻', features: '', price_range: '', display_order: 0
   });
 
-  const [newTestimonial, setNewTestimonial] = useState({
-    client_name: '', client_company: '', client_role: '', testimonial: '', client_image: '/placeholder.svg', rating: 5, is_featured: false, display_order: 0
-  });
-
   const [editingContent, setEditingContent] = useState<{[key: string]: any}>({});
 
   const usingDb = useMemo(() => isSupabaseConfigured, []);
@@ -117,10 +97,9 @@ const AdminDashboard: React.FC = () => {
     if (usingDb) {
       try {
         // Load all data from Supabase
-        const [projectsRes, servicesRes, testimonialsRes, contentRes, contactsRes] = await Promise.all([
+        const [projectsRes, servicesRes, contentRes, contactsRes] = await Promise.all([
           supabase.from('projects').select('*').order('created_at', { ascending: false }),
           supabase.from('services').select('*').order('display_order'),
-          supabase.from('testimonials').select('*').order('display_order'),
           supabase.from('site_content').select('*'),
           supabase.from('contacts').select('*').order('created_at', { ascending: false }).limit(50)
         ]);
@@ -130,9 +109,6 @@ const AdminDashboard: React.FC = () => {
 
         if (servicesRes.error) console.warn('Services load error:', servicesRes.error);
         else setServices(servicesRes.data || []);
-
-        if (testimonialsRes.error) console.warn('Testimonials load error:', testimonialsRes.error);
-        else setTestimonials(testimonialsRes.data || []);
 
         if (contentRes.error) console.warn('Content load error:', contentRes.error);
         else {
@@ -160,7 +136,6 @@ const AdminDashboard: React.FC = () => {
   const loadFromLocalStorage = () => {
     setProjects(loadFromLocal<Project>(LOCAL_KEYS.projects));
     setServices(loadFromLocal<Service>(LOCAL_KEYS.services));
-    setTestimonials(loadFromLocal<Testimonial>(LOCAL_KEYS.testimonials));
     const content = loadFromLocal<SiteContent>(LOCAL_KEYS.content);
     setSiteContent(content);
     const contentObj: {[key: string]: any} = {};
@@ -359,7 +334,7 @@ const AdminDashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Content Management System</h1>
-          <p className="text-gray-600">Manage all aspects of your Super<span className="text-green-500 font-semibold">Shift</span> Labs website</p>
+          <p className="text-gray-600">Manage all aspects of your SuperShift Labs website</p>
           {!usingDb && (
             <p className="mt-2 text-xs text-amber-700 bg-amber-50 inline-block px-2 py-1 rounded border border-amber-200">
               Running in frontend-only mode. Connect Supabase to persist data across browsers.
@@ -370,7 +345,7 @@ const AdminDashboard: React.FC = () => {
         <div className="bg-white rounded-lg shadow-lg">
           <div className="border-b border-gray-200">
             <nav className="flex overflow-x-auto">
-              {(['projects', 'services', 'testimonials', 'content', 'contacts'] as const).map((tab) => (
+              {(['projects', 'services', 'content', 'contacts'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -865,14 +840,6 @@ const AdminDashboard: React.FC = () => {
                         ))}
                       </div>
                     )}
-                  </div>
-                )}
-
-                {/* Testimonials Tab */}
-                {activeTab === 'testimonials' && (
-                  <div className="text-center py-12">
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Testimonials Management</h2>
-                    <p className="text-gray-600">Testimonial management interface coming soon...</p>
                   </div>
                 )}
               </>

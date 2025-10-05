@@ -24,6 +24,7 @@ const Navigation: React.FC = () => {
     { name: 'Projects', id: 'projects' },
     { name: 'SEO Check', id: 'seo-checker' },
     { name: 'About', id: 'about' },
+    { name: 'Contact', id: 'contact' }
   ];
 
   return (
@@ -36,11 +37,11 @@ const Navigation: React.FC = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="cursor-pointer"
           >
-            <div className={`text-xl font-bold transition-colors ${
+            <h1 className={`text-xl font-bold transition-colors ${
               isScrolled ? 'text-white' : 'text-white'
             }`}>
               Super<span className="text-green-400">Shift</span> Labs
-            </div>
+            </h1>
           </div>
           
           <div className="hidden md:flex items-center gap-8">

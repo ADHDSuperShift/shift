@@ -15,6 +15,13 @@ const Hero: React.FC = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  if (loading) {
+    return (
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-green-900/20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400"></div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-green-900/20">
@@ -27,7 +34,7 @@ const Hero: React.FC = () => {
       
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 leading-tight">
             {content.title.includes('SuperShift') ? (
               <>
                 Super<span className="text-green-400 glow-text">Shift</span> Labs
@@ -36,7 +43,7 @@ const Hero: React.FC = () => {
               content.title
             )}
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-green-200 font-light">
+          <p className="text-xl md:text-2xl text-green-200 font-light">
             {content.subtitle}
           </p>
         </div>
@@ -45,16 +52,16 @@ const Hero: React.FC = () => {
           {content.description}
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-4">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button 
             onClick={() => scrollToSection('services')}
-            className="w-full sm:w-auto px-8 py-4 bg-green-500 hover:bg-green-600 text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
+            className="px-8 py-4 bg-green-500 hover:bg-green-600 text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
           >
             {content.cta_text}
           </button>
           <button 
             onClick={() => scrollToSection('projects')}
-            className="hidden sm:block px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
+            className="px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             See Projects
           </button>

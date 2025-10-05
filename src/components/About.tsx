@@ -2,8 +2,20 @@ import React from 'react';
 import { useSiteContent } from '../hooks/useSiteContent';
 
 const About: React.FC = () => {
-  const { content } = useSiteContent('about');
+  const { content, loading: contentLoading } = useSiteContent('about');
 
+  const loading = contentLoading;
+
+  if (loading) {
+    return (
+      <section id="about" className="py-20 bg-gray-900">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400 mx-auto"></div>
+          <p className="mt-2 text-gray-300">Loading...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="about" className="py-20 bg-gray-900">
@@ -19,7 +31,7 @@ const About: React.FC = () => {
         
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h3 className="text-3xl font-bold text-white mb-6">The Super<span className="text-green-400">Shift</span> Philosophy</h3>
+            <h3 className="text-3xl font-bold text-white mb-6">The SuperShift Philosophy</h3>
             <div className="space-y-4 text-gray-300 leading-relaxed">
               <p>{content.description}</p>
               {content.mission && (
