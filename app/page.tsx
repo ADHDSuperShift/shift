@@ -15,8 +15,6 @@ export default function Home() {
     <div className="min-h-screen bg-gray-950">
       <Navigation />
       <main>
-        {/* Hidden SEO content for search engines */}
-        <h1 className="sr-only">SuperShift Labs - Digital Innovation Agency</h1>
         <Hero />
         <Services />
         <Projects />
