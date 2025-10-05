@@ -34,7 +34,8 @@ const SocialIcon = ({ icon, name }: { icon: string; name: string }) => {
 };
 
 const Contact: React.FC = () => {
-  const { content, loading } = useSiteContent('contact', {
+  // Force use hardcoded contact info instead of database
+  const contactInfo = {
     title: "Let's Build Something Amazing",
     description: "Ready to transform your digital presence? Get in touch and let's discuss your project.",
     email: 'admin@supershiftlabs.com',
@@ -47,7 +48,16 @@ const Contact: React.FC = () => {
       { name: 'X', url: 'https://x.com/supershiftlabs', icon: 'x' },
       { name: 'LinkedIn', url: 'https://linkedin.com/company/supershiftlabs', icon: 'linkedin' }
     ]
-  });
+  };
+  
+  const { content: dbContent, loading } = useSiteContent('contact', contactInfo);
+  
+  // Always use hardcoded contact info, but merge with database for title/description
+  const content = {
+    ...contactInfo,
+    title: dbContent.title || contactInfo.title,
+    description: dbContent.description || contactInfo.description
+  };
 
   const [formData, setFormData] = useState({
     name: '',
