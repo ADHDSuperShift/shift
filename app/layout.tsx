@@ -12,10 +12,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shift-f5a5ynmd1-adh
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'SuperShift Labs - Digital Innovation Agency | Web Development, Mobile Apps & Cloud Solutions',
+    default: 'SuperShift Labs - Digital Innovation Agency',
     template: '%s | SuperShift Labs'
   },
-  description: 'Transform your digital presence with SuperShift Labs. We specialize in cutting-edge web development, mobile app creation, cloud solutions, and custom software that drives business growth and innovation.',
+  description: 'Expert web development, mobile apps, and cloud solutions in South Africa. Transform your digital presence with custom software that drives growth.',
   keywords: ['web development', 'mobile apps', 'cloud solutions', 'digital agency', 'software development', 'UI/UX design', 'custom software', 'South Africa', 'Centurion'],
   authors: [{ name: 'SuperShift Labs' }],
   creator: 'SuperShift Labs',
