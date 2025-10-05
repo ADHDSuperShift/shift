@@ -16,10 +16,18 @@ export const metadata: Metadata = {
     template: '%s | SuperShift Labs'
   },
   description: 'Expert web development, mobile apps, and cloud solutions in South Africa. Transform your digital presence with custom software that drives growth.',
-  keywords: ['web development', 'mobile apps', 'cloud solutions', 'digital agency', 'software development', 'UI/UX design', 'custom software', 'South Africa', 'Centurion'],
+  keywords: ['web development', 'mobile apps', 'cloud solutions', 'digital agency', 'software development', 'UI/UX design', 'custom software', 'South Africa', 'Centurion', 'responsive design', 'PWA', 'API development', 'database design'],
   authors: [{ name: 'SuperShift Labs' }],
   creator: 'SuperShift Labs',
   publisher: 'SuperShift Labs',
+  category: 'technology',
+  applicationName: 'SuperShift Labs',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
@@ -141,6 +149,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pjhrogdbzpqnxhfxxmsb.supabase.co" />
         <link rel="preconnect" href="https://pjhrogdbzpqnxhfxxmsb.supabase.co" />
+        <link rel="dns-prefetch" href="https://d64gsuwffb70l.cloudfront.net" />
+        
+        {/* Additional Meta Tags */}
+        <meta name="theme-color" content="#22c55e" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="SuperShift Labs" />
         
         {/* JSON-LD Structured Data */}
         <Script

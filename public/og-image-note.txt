@@ -1,0 +1,7 @@
+OG Image Placeholder Note:
+Create a 1200x630px image with:
+- SuperShift Labs branding
+- Green (#22c55e) accent color
+- Dark background
+- Company tagline
+Save as og-image.png
