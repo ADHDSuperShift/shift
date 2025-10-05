@@ -77,21 +77,39 @@ export const metadata: Metadata = {
   },
 }
 
-// JSON-LD Structured Data
-const jsonLd = {
+// JSON-LD Structured Data - Organization Schema
+const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
   name: 'SuperShift Labs',
+  legalName: 'SuperShift Labs',
   description: 'Digital Innovation Agency specializing in web development, mobile apps, and cloud solutions',
   url: siteUrl,
-  logo: `${siteUrl}/favicon.svg`,
-  image: `${siteUrl}/og-image.png`,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/favicon.svg`,
+    width: '512',
+    height: '512',
+  },
+  image: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/og-image.png`,
+    width: '1200',
+    height: '630',
+  },
   email: 'admin@supershiftlabs.com',
   telephone: '+27673779676',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Centurion',
+    addressRegion: 'Gauteng',
     addressCountry: 'ZA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '-25.8601',
+    longitude: '28.1886',
   },
   sameAs: [
     'https://facebook.com/supershiftlabs',
@@ -99,41 +117,162 @@ const jsonLd = {
     'https://x.com/supershiftlabs',
     'https://linkedin.com/company/supershiftlabs',
   ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+27673779676',
-    contactType: 'customer service',
-    email: 'admin@supershiftlabs.com',
-    availableLanguage: ['English'],
-  },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: '+27673779676',
+      contactType: 'customer service',
+      email: 'admin@supershiftlabs.com',
+      availableLanguage: ['English', 'Afrikaans'],
+      areaServed: 'ZA',
+    },
+    {
+      '@type': 'ContactPoint',
+      telephone: '+27673779676',
+      contactType: 'sales',
+      email: 'admin@supershiftlabs.com',
+      availableLanguage: ['English', 'Afrikaans'],
+      areaServed: ['ZA', 'US', 'GB'],
+    },
+  ],
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '5',
-    reviewCount: '50',
+    bestRating: '5',
+    worstRating: '1',
+    ratingCount: '50',
   },
-  offers: {
-    '@type': 'AggregateOffer',
-    priceCurrency: 'ZAR',
-    offerCount: '6',
-    offers: [
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Web Development',
-          description: 'Custom web applications and responsive websites',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: 'Mobile App Development',
-          description: 'Native and cross-platform mobile applications',
-        },
-      },
-    ],
+  foundingDate: '2024',
+  slogan: 'Transform Your Digital Presence',
+  knowsAbout: [
+    'Web Development',
+    'Mobile App Development',
+    'Cloud Solutions',
+    'UI/UX Design',
+    'Software Development',
+    'API Development',
+    'Database Design',
+  ],
+}
+
+// JSON-LD Structured Data - Website Schema
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  url: siteUrl,
+  name: 'SuperShift Labs',
+  description: 'Expert web development, mobile apps, and cloud solutions in South Africa',
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
   },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+  inLanguage: 'en-US',
+}
+
+// JSON-LD Structured Data - Local Business Schema
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${siteUrl}/#localbusiness`,
+  name: 'SuperShift Labs',
+  image: `${siteUrl}/og-image.png`,
+  priceRange: '$$',
+  telephone: '+27673779676',
+  email: 'admin@supershiftlabs.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Centurion',
+    addressRegion: 'Gauteng',
+    addressCountry: 'ZA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '-25.8601',
+    longitude: '28.1886',
+  },
+  url: siteUrl,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+  ],
+  areaServed: {
+    '@type': 'Country',
+    name: 'South Africa',
+  },
+}
+
+// JSON-LD Structured Data - Service Offerings
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: [
+    {
+      '@type': 'Service',
+      name: 'Web Development',
+      description: 'Custom web applications and responsive websites built with modern technologies',
+      provider: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      serviceType: 'Web Development',
+      areaServed: 'Worldwide',
+    },
+    {
+      '@type': 'Service',
+      name: 'Mobile App Development',
+      description: 'Native and cross-platform mobile applications for iOS and Android',
+      provider: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      serviceType: 'Mobile App Development',
+      areaServed: 'Worldwide',
+    },
+    {
+      '@type': 'Service',
+      name: 'Cloud Solutions',
+      description: 'Scalable cloud infrastructure and deployment solutions',
+      provider: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      serviceType: 'Cloud Computing',
+      areaServed: 'Worldwide',
+    },
+    {
+      '@type': 'Service',
+      name: 'UI/UX Design',
+      description: 'User-centered interface and experience design',
+      provider: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      serviceType: 'Design',
+      areaServed: 'Worldwide',
+    },
+  ],
+}
+
+// Breadcrumb Schema
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: siteUrl,
+    },
+  ],
 }
 
 export default function RootLayout({
@@ -158,11 +297,31 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="SuperShift Labs" />
         
-        {/* JSON-LD Structured Data */}
+        {/* JSON-LD Structured Data - Multiple Schemas */}
         <Script
-          id="structured-data"
+          id="organization-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <Script
+          id="localbusiness-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <Script
+          id="service-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        />
+        <Script
+          id="breadcrumb-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
       </head>
       <body className={inter.className}>
