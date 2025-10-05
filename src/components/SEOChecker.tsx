@@ -30,27 +30,41 @@ const SEOChecker: React.FC = () => {
 
     setLoading(true);
     setError('');
+    setResult(null);
     
-    // Simulate SEO analysis
-    setTimeout(() => {
-      const mockResult: SEOResult = {
-        score: Math.floor(Math.random() * 40) + 60, // Random score 60-100
-        title: 'Page Title Found',
-        description: 'Meta description present',
-        headings: Math.floor(Math.random() * 10) + 1,
-        images: Math.floor(Math.random() * 20) + 5,
-        links: Math.floor(Math.random() * 50) + 10,
-        recommendations: [
-          'Add more descriptive alt text to images',
-          'Improve page loading speed',
-          'Add structured data markup',
-          'Optimize meta descriptions',
-          'Include more internal links'
-        ]
-      };
-      setResult(mockResult);
+    try {
+      // Call the real SEO API
+      const response = await fetch('/api/seo-check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to analyze URL');
+      }
+
+      const data = await response.json();
+      
+      // Transform API response to match our result format
+      setResult({
+        score: data.score,
+        title: data.title,
+        description: data.description,
+        headings: data.headings,
+        images: data.images,
+        links: data.links,
+        recommendations: data.recommendations || []
+      });
+    } catch (err: any) {
+      setError(err.message || 'Failed to analyze the URL. Please check the URL and try again.');
+      console.error('SEO Check error:', err);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   const getScoreColor = (score: number) => {
